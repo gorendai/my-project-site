@@ -200,26 +200,26 @@
                     <path d="M327 327 Q400 310 473 327" fill="none" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" />
                   </svg>
 
-                  <div id="beam" class="absolute left-1/2 top-[30.77%] z-10 h-2 w-[400px] max-w-[78%] -translate-x-1/2 rounded-full bg-slate-300 shadow-sm" style="transform: translate(-50%, -50%) rotate(0deg);">
+                  <div id="beam" class="entropy-scale-beam absolute left-1/2 top-[30.77%] z-10 h-2 w-[400px] max-w-[78%] -translate-x-1/2 rounded-full bg-slate-300 shadow-sm" style="transform: translate(-50%, -50%) rotate(0deg);">
                     <div class="pan-suspension left-0" style="--counter-angle: 0deg;">
-                      <span class="absolute left-[-20px] top-0 h-[88px] w-px bg-indigo-300"></span>
-                      <span class="absolute left-[20px] top-0 h-[88px] w-px bg-indigo-300"></span>
-                      <div class="absolute left-[-72px] top-[86px] h-[58px] w-36">
+                      <span class="entropy-scale-wire bg-indigo-300"></span>
+                      <span class="entropy-scale-wire bg-indigo-300"></span>
+                      <div class="entropy-scale-pan">
                         <svg class="absolute inset-0 h-full w-full" viewBox="0 0 144 58" aria-hidden="true">
                           <path d="M2 2 Q72 16 142 2 L128 43 Q72 58 16 43 Z" fill="#eef2ff" stroke="#a5b4fc" stroke-width="2.5" stroke-linejoin="round" />
                         </svg>
-                        <span class="absolute inset-x-0 top-[18px] text-center font-mono text-[11px] font-semibold tracking-wide text-slate-600">СИМВОЛ А</span>
+                        <span class="entropy-scale-pan-label text-center font-mono font-semibold tracking-wide text-slate-600">СИМВОЛ А</span>
                       </div>
                     </div>
 
                     <div class="pan-suspension right-0" style="--counter-angle: 0deg;">
-                      <span class="absolute left-[-20px] top-0 h-[88px] w-px bg-sky-300"></span>
-                      <span class="absolute left-[20px] top-0 h-[88px] w-px bg-sky-300"></span>
-                      <div class="absolute left-[-72px] top-[86px] h-[58px] w-36">
+                      <span class="entropy-scale-wire bg-sky-300"></span>
+                      <span class="entropy-scale-wire bg-sky-300"></span>
+                      <div class="entropy-scale-pan">
                         <svg class="absolute inset-0 h-full w-full" viewBox="0 0 144 58" aria-hidden="true">
                           <path d="M2 2 Q72 16 142 2 L128 43 Q72 58 16 43 Z" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="2.5" stroke-linejoin="round" />
                         </svg>
-                        <span class="absolute inset-x-0 top-[18px] text-center font-mono text-[11px] font-semibold tracking-wide text-slate-600">СИМВОЛ Б</span>
+                        <span class="entropy-scale-pan-label text-center font-mono font-semibold tracking-wide text-slate-600">СИМВОЛ Б</span>
                       </div>
                     </div>
                   </div>
@@ -227,8 +227,8 @@
                 </div>
               </div>
 
-              <div class="mt-7 grid gap-6 xl:grid-cols-2">
-                <label class="block rounded-2xl border border-indigo-100 bg-indigo-50/60 p-5">
+              <div class="entropy-weight-controls mt-7 grid gap-6 xl:grid-cols-2">
+                <label class="entropy-weight block rounded-2xl border border-indigo-100 bg-indigo-50/60 p-5">
                   <span class="flex items-center justify-between gap-3">
                     <span class="text-sm font-semibold text-indigo-900">Вероятность символа A</span>
                     <output id="probability-a" for="slider-a" class="font-mono text-lg font-semibold text-indigo-700">0.50</output>
@@ -237,7 +237,7 @@
                   <span class="mt-2 flex justify-between font-mono text-[11px] text-indigo-500"><span>0.00</span><span>1.00</span></span>
                 </label>
 
-                <label class="block rounded-2xl border border-sky-100 bg-sky-50/60 p-5">
+                <label class="entropy-weight block rounded-2xl border border-sky-100 bg-sky-50/60 p-5">
                   <span class="flex items-center justify-between gap-3">
                     <span class="text-sm font-semibold text-sky-900">Вероятность символа B</span>
                     <output id="probability-b" for="slider-b" class="font-mono text-lg font-semibold text-sky-700">0.50</output>

@@ -216,6 +216,38 @@ textarea {
   white-space: nowrap;
 }
 
+.entropy-scale-wire {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  height: clamp(42px, 11vw, 88px);
+}
+
+.entropy-scale-wire:first-child {
+  left: calc(clamp(48px, 18vw, 144px) * -0.14);
+}
+
+.entropy-scale-wire:nth-child(2) {
+  left: calc(clamp(48px, 18vw, 144px) * 0.14);
+}
+
+.entropy-scale-pan {
+  position: absolute;
+  top: clamp(30px, 10.75vw, 86px);
+  left: calc(clamp(48px, 18vw, 144px) / -2);
+  width: clamp(48px, 18vw, 144px);
+  height: clamp(24px, 7.25vw, 58px);
+}
+
+.entropy-scale-pan-label {
+  position: absolute;
+  top: clamp(6px, 2.25vw, 18px);
+  right: 0;
+  left: 0;
+  font-size: clamp(5px, 1.375vw, 11px);
+  line-height: 1;
+}
+
 @media (max-width: 1023px) {
   .mobile-nav {
     display: block;
@@ -349,6 +381,37 @@ textarea {
     overflow-wrap: anywhere;
     text-align: center;
     white-space: normal;
+  }
+}
+
+@media (max-width: 768px) {
+  .entropy-scale-beam {
+    width: calc(100% - 2rem);
+    max-width: none;
+  }
+
+  .entropy-weight-controls {
+    gap: 0.75rem;
+  }
+
+  .entropy-weight {
+    min-width: 0;
+    padding: 0.75rem;
+  }
+
+  .entropy-weight > span {
+    gap: 0.5rem;
+  }
+
+  .entropy-weight > span > span:first-child {
+    min-width: 0;
+    font-size: 0.75rem;
+    line-height: 1.25;
+  }
+
+  .entropy-weight output {
+    flex: 0 0 auto;
+    font-size: 1rem;
   }
 }
 
