@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Энтропийные весы Шеннона</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            boxShadow: {
+              soft: '0 18px 45px rgba(15, 23, 42, 0.08)',
+            },
+          },
+        },
+      };
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="./curtain.js" defer></script>
+    <script src="./theme-toggle.js" defer></script>
+    <link rel="stylesheet" href="theme.css" />
+    <style>
+      .probability-slider {
+        appearance: none;
+        height: 0.5rem;
+        border-radius: 9999px;
+        background: linear-gradient(to right, #bae6fd, #ddd6fe);
+        cursor: pointer;
+      }
+
+      .probability-slider::-webkit-slider-thumb {
+        appearance: none;
+        width: 1.25rem;
+        height: 1.25rem;
+        border: 3px solid white;
+        border-radius: 9999px;
+        background: #6366f1;
+        box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+      }
+
+      .probability-slider::-moz-range-thumb {
+        width: 1rem;
+        height: 1rem;
+        border: 3px solid white;
+        border-radius: 9999px;
+        background: #6366f1;
+        box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+      }
+
+      #beam {
+        transform-origin: center;
+        transition: transform 500ms ease-out;
+      }
+
+      .pan-suspension {
+        position: absolute;
+        top: 0;
+        width: 0;
+        height: 150px;
+        transform: rotate(var(--counter-angle, 0deg));
+        transform-origin: top center;
+        transition: transform 500ms ease-out;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #beam,
+        .pan-suspension {
+          transition-duration: 0ms;
+        }
+      }
+    </style>
+  </head>
+  <body class="theme-light transition-colors duration-500 ease-in-out min-h-screen antialiased">
+    <div id="curtain" class="site-curtain" aria-hidden="true">
+      <span class="site-curtain__label">Математический анализ оптимальности</span>
+    </div>
+    <div class="mobile-nav" aria-label="Мобильная навигация">
+      <div class="mobile-nav__header">
+        <span class="mobile-nav__title">Научная платформа</span>
+        <button id="mobileNavToggle" class="mobile-nav__toggle rounded-xl border border-slate-200 bg-white text-slate-700" type="button" aria-expanded="false" aria-controls="mobileNavMenu" aria-label="Открыть меню">
+          <i data-lucide="menu" class="h-5 w-5"></i>
+        </button>
+      </div>
+      <nav id="mobileNavMenu" class="mobile-nav__menu" aria-label="Основная навигация">
+        <a class="mobile-nav__link" href="index.html"><span class="mobile-nav__icon"><i data-lucide="layout-grid" class="h-4 w-4"></i></span>Обзор и теория</a>
+        <a class="mobile-nav__link" href="game-huffman.html"><span class="mobile-nav__icon"><i data-lucide="git-branch" class="h-4 w-4"></i></span>Лаборатория Хаффмана</a>
+        <a class="mobile-nav__link" href="game-lz.html"><span class="mobile-nav__icon"><i data-lucide="timer" class="h-4 w-4"></i></span>Выбери лучший алгоритм</a>
+        <a class="mobile-nav__link" href="sandbox.html"><span class="mobile-nav__icon"><i data-lucide="swords" class="h-4 w-4"></i></span>Арена оптимальности</a>
+        <a class="mobile-nav__link" href="game-shannon.html" aria-current="page"><span class="mobile-nav__icon"><i data-lucide="scale" class="h-4 w-4"></i></span>Энтропийные весы</a>
+      </nav>
+    </div>
+
+    <div class="mx-auto flex min-h-screen max-w-[1800px] px-3 py-4 md:px-5 lg:px-6">
+      <aside class="panel-surface mr-5 hidden w-[28%] max-w-[380px] rounded-[30px] p-5 lg:flex lg:flex-col">
+        <div class="mb-10">
+          <div class="muted-label mb-4 flex h-8 items-center text-slate-500" aria-label="Research OS">
+            <svg class="h-8 w-8" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 34V24M20 24V16M20 24L10 16M20 24L30 16M10 16V8M20 16V7M30 16V8" />
+              <circle cx="10" cy="7" r="1.5" />
+              <circle cx="20" cy="6" r="1.5" />
+              <circle cx="30" cy="7" r="1.5" />
+            </svg>
+          </div>
+          <h1 class="text-base font-medium leading-relaxed text-slate-800">
+            Математический анализ оптимальности алгоритмов сжатия данных: доказательство границ эффективности кодирования Хаффмана и словарного сжатия
+          </h1>
+        </div>
+
+        <nav class="mt-4 space-y-2">
+          <a href="index.html" class="nav-button flex items-center gap-3 rounded-2xl border border-transparent px-4 py-3 text-sm font-medium text-slate-600 hover:border-slate-200 hover:bg-white/60">
+            <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
+              <i data-lucide="layout-grid" class="h-4 w-4"></i>
+            </span>
+            <span class="nav-label">Обзор и теория</span>
+          </a>
+          <a href="game-huffman.html" class="nav-button flex items-center gap-3 rounded-2xl border border-transparent px-4 py-3 text-sm font-medium text-slate-600 hover:border-slate-200 hover:bg-white/60">
+            <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+              <i data-lucide="git-branch" class="h-4 w-4"></i>
+            </span>
+            <span class="nav-label">Лаборатория Хаффмана</span>
+          </a>
+          <a href="game-lz.html" class="nav-button flex items-center gap-3 rounded-2xl border border-transparent px-4 py-3 text-sm font-medium text-slate-600 hover:border-slate-200 hover:bg-white/60">
+            <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+              <i data-lucide="timer" class="h-4 w-4"></i>
+            </span>
+            <span class="nav-label">Выбери лучший алгоритм</span>
+          </a>
+          <a href="sandbox.html" class="nav-button flex items-center gap-3 rounded-2xl border border-transparent px-4 py-3 text-sm font-medium text-slate-600 hover:border-slate-200 hover:bg-white/60">
+            <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+              <i data-lucide="swords" class="h-4 w-4"></i>
+            </span>
+            <span class="nav-label">Арена оптимальности</span>
+          </a>
+          <a href="game-shannon.html" aria-current="page" class="nav-button active-tab flex items-center gap-3 rounded-2xl border px-4 py-3 text-sm font-medium text-slate-700">
+            <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-50 text-sky-600">
+              <i data-lucide="scale" class="h-4 w-4"></i>
+            </span>
+            <span class="nav-label">Энтропийные весы</span>
+          </a>
+        </nav>
+
+      </aside>
+
+      <main class="main-surface min-w-0 flex-1 rounded-[30px] border border-slate-200/80 bg-white/60 p-4 shadow-soft backdrop-blur-sm sm:p-6 lg:p-9">
+        <header class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-6">
+          <div class="flex items-center gap-3">
+            <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-100 text-sky-700">
+              <i data-lucide="scale" class="h-5 w-5"></i>
+            </div>
+            <div>
+              <div class="section-label text-[10px] uppercase tracking-[0.2em] text-slate-500">Научная платформа</div>
+              <div class="title-sub text-lg font-semibold text-slate-800">Энтропийная лаборатория</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <button id="themeToggle" type="button" class="toggle flex items-center px-2.5" aria-label="Переключить тему">
+              <span class="flex items-center justify-center text-slate-600">
+                <i data-lucide="sun" class="h-4 w-4"></i>
+              </span>
+              <span class="toggle-knob ml-auto"></span>
+            </button>
+            <div class="flex h-11 w-11 items-center justify-center rounded-full bg-slate-900 text-sm font-semibold text-white shadow-sm" aria-label="Профиль AM" title="Профиль AM">
+              AM
+            </div>
+          </div>
+        </header>
+
+        <section class="pt-8 lg:pt-10">
+          <div class="mb-8">
+            <div class="section-label text-[10px] font-medium uppercase tracking-[0.28em] text-slate-500">Вероятностная модель · два символа</div>
+            <h2 class="heading mt-3 max-w-5xl text-3xl font-semibold tracking-[-0.04em] text-slate-900 sm:text-4xl xl:text-5xl">
+              Энтропийные весы Шеннона: Баланс неопределенности
+            </h2>
+            <p class="body-copy mt-4 max-w-4xl text-base leading-8 text-slate-600">
+              Настройте шансы для каждого символа, чтобы увидеть, когда система становится максимально непредсказуемой.
+            </p>
+          </div>
+
+          <div class="grid gap-6 2xl:grid-cols-[minmax(0,1fr)_340px]">
+            <section class="panel-surface min-w-0 rounded-[28px] p-5 sm:p-7 xl:p-9" aria-labelledby="balance-heading">
+              <div class="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <div class="muted-label text-[10px] font-medium uppercase tracking-[0.24em] text-slate-500">Интерактивная модель</div>
+                  <h3 id="balance-heading" class="card-title mt-2 text-xl font-semibold text-slate-900">Распределение вероятностей</h3>
+                </div>
+                <div class="rounded-full border border-sky-200 bg-sky-50 px-3 py-1.5 font-mono text-xs text-sky-700">
+                  P(A) + P(B) = 1
+                </div>
+              </div>
+
+              <div class="mt-5 overflow-hidden rounded-[24px] border border-slate-200/80 bg-gradient-to-b from-white to-slate-50/80 px-3 py-4 sm:px-8 sm:py-7">
+                <div class="relative mx-auto aspect-[800/390] w-full max-w-[960px]" role="img" aria-labelledby="scale-title scale-description">
+                  <span id="scale-title" class="sr-only">Весы вероятностей символов A и B</span>
+                  <span id="scale-description" class="sr-only">Наклон коромысла и положение чаш отражают разницу вероятностей двух символов.</span>
+                  <svg class="absolute inset-0 h-full w-full" viewBox="0 0 800 390" aria-hidden="true">
+                    <path d="M400 120 L400 304" stroke="#94a3b8" stroke-width="12" stroke-linecap="round" />
+                    <path d="M400 120 L340 306 L460 306 Z" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="2" stroke-linejoin="round" />
+                    <path d="M310 326 Q400 302 490 326 L506 347 Q400 365 294 347 Z" fill="#cbd5e1" opacity="0.72" />
+                    <path d="M327 327 Q400 310 473 327" fill="none" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" />
+                  </svg>
+
+                  <div id="beam" class="absolute left-1/2 top-[30.77%] z-10 h-2 w-[400px] max-w-[78%] -translate-x-1/2 rounded-full bg-slate-300 shadow-sm" style="transform: translate(-50%, -50%) rotate(0deg);">
+                    <div class="pan-suspension left-0" style="--counter-angle: 0deg;">
+                      <span class="absolute left-[-20px] top-0 h-[88px] w-px bg-indigo-300"></span>
+                      <span class="absolute left-[20px] top-0 h-[88px] w-px bg-indigo-300"></span>
+                      <div class="absolute left-[-72px] top-[86px] h-[58px] w-36">
+                        <svg class="absolute inset-0 h-full w-full" viewBox="0 0 144 58" aria-hidden="true">
+                          <path d="M2 2 Q72 16 142 2 L128 43 Q72 58 16 43 Z" fill="#eef2ff" stroke="#a5b4fc" stroke-width="2.5" stroke-linejoin="round" />
+                        </svg>
+                        <span class="absolute inset-x-0 top-[18px] text-center font-mono text-[11px] font-semibold tracking-wide text-slate-600">СИМВОЛ А</span>
+                      </div>
+                    </div>
+
+                    <div class="pan-suspension right-0" style="--counter-angle: 0deg;">
+                      <span class="absolute left-[-20px] top-0 h-[88px] w-px bg-sky-300"></span>
+                      <span class="absolute left-[20px] top-0 h-[88px] w-px bg-sky-300"></span>
+                      <div class="absolute left-[-72px] top-[86px] h-[58px] w-36">
+                        <svg class="absolute inset-0 h-full w-full" viewBox="0 0 144 58" aria-hidden="true">
+                          <path d="M2 2 Q72 16 142 2 L128 43 Q72 58 16 43 Z" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="2.5" stroke-linejoin="round" />
+                        </svg>
+                        <span class="absolute inset-x-0 top-[18px] text-center font-mono text-[11px] font-semibold tracking-wide text-slate-600">СИМВОЛ Б</span>
+                      </div>
+                    </div>
+                  </div>
+                  <span class="absolute left-1/2 top-[30.77%] z-20 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-[5px] border-slate-400 bg-white shadow-sm" aria-hidden="true"></span>
+                </div>
+              </div>
+
+              <div class="mt-7 grid gap-6 xl:grid-cols-2">
+                <label class="block rounded-2xl border border-indigo-100 bg-indigo-50/60 p-5">
+                  <span class="flex items-center justify-between gap-3">
+                    <span class="text-sm font-semibold text-indigo-900">Вероятность символа A</span>
+                    <output id="probability-a" for="slider-a" class="font-mono text-lg font-semibold text-indigo-700">0.50</output>
+                  </span>
+                  <input id="slider-a" class="probability-slider mt-5 w-full" type="range" min="0" max="1" step="0.01" value="0.5" aria-label="Вероятность символа A" />
+                  <span class="mt-2 flex justify-between font-mono text-[11px] text-indigo-500"><span>0.00</span><span>1.00</span></span>
+                </label>
+
+                <label class="block rounded-2xl border border-sky-100 bg-sky-50/60 p-5">
+                  <span class="flex items-center justify-between gap-3">
+                    <span class="text-sm font-semibold text-sky-900">Вероятность символа B</span>
+                    <output id="probability-b" for="slider-b" class="font-mono text-lg font-semibold text-sky-700">0.50</output>
+                  </span>
+                  <input id="slider-b" class="probability-slider mt-5 w-full" type="range" min="0" max="1" step="0.01" value="0.5" aria-label="Вероятность символа B" />
+                  <span class="mt-2 flex justify-between font-mono text-[11px] text-sky-500"><span>0.00</span><span>1.00</span></span>
+                </label>
+              </div>
+            </section>
+
+            <aside class="space-y-5">
+              <section class="panel-surface rounded-[28px] p-6 sm:p-7">
+                <div class="muted-label text-[10px] font-medium uppercase tracking-[0.24em] text-slate-500">Метрика информации</div>
+                <div class="mt-6 rounded-2xl border border-violet-100 bg-violet-50/70 p-5">
+                  <div class="text-sm font-medium text-violet-800">Текущая энтропия</div>
+                  <div class="mt-3 flex items-baseline gap-2">
+                    <output id="entropy-value" class="font-mono text-5xl font-semibold tracking-tight text-violet-950">1.000</output>
+                    <span class="font-mono text-sm text-violet-700">бит</span>
+                  </div>
+                  <div class="mt-4 h-2 overflow-hidden rounded-full bg-violet-100">
+                    <div id="entropy-bar" class="h-full rounded-full bg-gradient-to-r from-indigo-400 to-sky-400 transition-all duration-500" style="width: 100%"></div>
+                  </div>
+                  <div class="mt-2 flex justify-between text-[11px] text-violet-600">
+                    <span>0 бит</span>
+                    <span>1 бит · максимум</span>
+                  </div>
+                </div>
+
+                <div class="mt-5 rounded-2xl border border-slate-200 bg-white/70 p-5">
+                  <div class="text-sm font-medium text-slate-600">Состояние системы</div>
+                  <div class="mt-3 flex items-start gap-3">
+                    <span id="state-indicator" class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-emerald-500"></span>
+                    <div>
+                      <div id="system-state" class="text-base font-semibold text-slate-900">Равномерное распределение</div>
+                      <p id="state-description" class="mt-2 text-sm leading-6 text-slate-500">Оба символа одинаково вероятны — неопределенность максимальна.</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="panel-surface rounded-[28px] p-6">
+                <div class="muted-label text-[10px] font-medium uppercase tracking-[0.24em] text-slate-500">Формула Шеннона</div>
+                <div class="formula-card mt-4 rounded-2xl p-5">
+                  <div class="formula-text font-mono text-sm leading-7 text-slate-900 sm:text-base">
+                    H = −Σ p(x) log<sub>2</sub> p(x)
+                  </div>
+                  <p class="body-copy mt-3 text-sm leading-6 text-slate-600">
+                    Чем равномернее распределены вероятности символов, тем больше информации несёт результат. 
+                  </p>
+                </div>
+              </section>
+            </aside>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const sliderA = document.getElementById('slider-a');
+      const sliderB = document.getElementById('slider-b');
+      const probabilityA = document.getElementById('probability-a');
+      const probabilityB = document.getElementById('probability-b');
+      const entropyValue = document.getElementById('entropy-value');
+      const entropyBar = document.getElementById('entropy-bar');
+      const systemState = document.getElementById('system-state');
+      const stateDescription = document.getElementById('state-description');
+      const stateIndicator = document.getElementById('state-indicator');
+      const beam = document.getElementById('beam');
+
+      function updateModel(changedSlider) {
+        const pA = changedSlider === sliderA
+          ? Number(sliderA.value)
+          : Number((1 - Number(sliderB.value)).toFixed(2));
+        const pB = Number((1 - pA).toFixed(2));
+        sliderA.value = pA.toFixed(2);
+        sliderB.value = pB.toFixed(2);
+        probabilityA.value = pA.toFixed(2);
+        probabilityB.value = pB.toFixed(2);
+        sliderA.setAttribute('aria-valuetext', pA.toFixed(2));
+        sliderB.setAttribute('aria-valuetext', pB.toFixed(2));
+
+        const entropy = pA === 0 || pA === 1
+          ? 0
+          : -(pA * Math.log2(pA) + pB * Math.log2(pB));
+        entropyValue.value = entropy.toFixed(3);
+        entropyBar.style.width = `${(entropy * 100).toFixed(1)}%`;
+        const angle = (pA - pB) * 20;
+        const beamRotation = -angle;
+        beam.style.transform = `translate(-50%, -50%) rotate(${beamRotation.toFixed(2)}deg)`;
+        beam.querySelectorAll('.pan-suspension').forEach(function (pan) {
+          pan.style.setProperty('--counter-angle', `${angle.toFixed(2)}deg`);
+        });
+
+        if (pA === 0 || pA === 1) {
+          systemState.textContent = 'Абсолютная определенность';
+          stateDescription.textContent = 'Один символ гарантированно возникает, поэтому неопределенность отсутствует.';
+          stateIndicator.className = 'mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-rose-500';
+        } else if (Math.abs(pA - 0.5) < 0.005) {
+          systemState.textContent = 'Равномерное распределение';
+          stateDescription.textContent = 'Оба символа одинаково вероятны — неопределенность максимальна.';
+          stateIndicator.className = 'mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-emerald-500';
+        } else {
+          systemState.textContent = 'Смещение';
+          stateDescription.textContent = `Символ ${pA > 0.5 ? 'A' : 'B'} вероятнее и опускает свою чашу весов.`;
+          stateIndicator.className = 'mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-amber-500';
+        }
+      }
+
+      sliderA.addEventListener('input', function () {
+        updateModel(sliderA);
+      });
+      sliderB.addEventListener('input', function () {
+        updateModel(sliderB);
+      });
+
+      updateModel(sliderA);
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

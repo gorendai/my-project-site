@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Платформа научного анализа сжатия</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            boxShadow: {
+              soft: '0 18px 45px rgba(15, 23, 42, 0.08)',
+            },
+          },
+        },
+      };
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="./curtain.js" defer></script>
+    <script src="./theme-toggle.js" defer></script>
+    <link rel="stylesheet" href="theme.css" />
+  </head>
+  <body class="theme-light transition-colors duration-500 ease-in-out min-h-screen antialiased">
+    <div id="curtain" class="site-curtain" aria-hidden="true">
+      <span class="site-curtain__label">Математический анализ оптимальности</span>
+    </div>
+    <div class="mobile-nav" aria-label="Мобильная навигация">
+      <div class="mobile-nav__header">
+        <span class="mobile-nav__title">Научная платформа</span>
+        <button id="mobileNavToggle" class="mobile-nav__toggle rounded-xl border border-slate-200 bg-white text-slate-700" type="button" aria-expanded="false" aria-controls="mobileNavMenu" aria-label="Открыть меню">
+          <i data-lucide="menu" class="h-5 w-5"></i>
+        </button>
+      </div>
+      <nav id="mobileNavMenu" class="mobile-nav__menu" aria-label="Основная навигация">
+        <a class="mobile-nav__link" href="index.html" aria-current="page"><span class="mobile-nav__icon"><i data-lucide="layout-grid" class="h-4 w-4"></i></span>Обзор и теория</a>
+        <a class="mobile-nav__link" href="game-huffman.html"><span class="mobile-nav__icon"><i data-lucide="git-branch" class="h-4 w-4"></i></span>Лаборатория Хаффмана</a>
+        <a class="mobile-nav__link" href="game-lz.html"><span class="mobile-nav__icon"><i data-lucide="timer" class="h-4 w-4"></i></span>Выбери лучший алгоритм</a>
+        <a class="mobile-nav__link" href="sandbox.html"><span class="mobile-nav__icon"><i data-lucide="swords" class="h-4 w-4"></i></span>Арена оптимальности</a>
+        <a class="mobile-nav__link" href="game-shannon.html"><span class="mobile-nav__icon"><i data-lucide="scale" class="h-4 w-4"></i></span>Энтропийные весы</a>
+      </nav>
+    </div>
+    <div class="mx-auto flex min-h-screen max-w-[1600px] px-3 py-4 md:px-5 lg:px-6">
+      <aside class="panel-surface mr-5 hidden w-[28%] rounded-[30px] p-5 lg:flex lg:flex-col">
+        <div class="mb-10">
+          <div class="muted-label mb-4 flex h-8 items-center text-slate-500" aria-label="Research OS">
+            <svg class="h-8 w-8" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 34V24M20 24V16M20 24L10 16M20 24L30 16M10 16V8M20 16V7M30 16V8" />
+              <circle cx="10" cy="7" r="1.5" />
+              <circle cx="20" cy="6" r="1.5" />
+              <circle cx="30" cy="7" r="1.5" />
+            </svg>
+          </div>
+          <h1 class="text-base font-medium leading-relaxed text-slate-800">
+            Математический анализ оптимальности алгоритмов сжатия данных: доказательство границ эффективности кодирования Хаффмана и словарного сжатия
+          </h1>
+        </div>
+
+        <nav class="mt-4 space-y-2">
+          <a href="#overview" class="nav-button active-tab flex items-center gap-3 rounded-2xl border px-4 py-3 text-sm font-medium text-slate-700">
+            <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
+              <i data-lucide="layout-grid" class="h-4 w-4"></i>
+            </span>
+            <span class="nav-label">Обзор и теория</span>
+          </a>
+          <a href="game-huffman.html" class="nav-button flex items-center gap-3 rounded-2xl border border-transparent px-4 py-3 text-sm font-medium text-slate-600 hover:border-slate-200 hover:bg-white/60">
+            <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+              <i data-lucide="git-branch" class="h-4 w-4"></i>
+            </span>
+            <span class="nav-label">Лаборатория Хаффмана</span>
+          </a>
+          <a href="game-lz.html" class="nav-button flex items-center gap-3 rounded-2xl border border-transparent px-4 py-3 text-sm font-medium text-slate-600 hover:border-slate-200 hover:bg-white/60">
+            <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+              <i data-lucide="timer" class="h-4 w-4"></i>
+            </span>
+            <span class="nav-label">Выбери лучший алгоритм</span>
+          </a>
+          <a href="sandbox.html" class="nav-button flex items-center gap-3 rounded-2xl border border-transparent px-4 py-3 text-sm font-medium text-slate-600 hover:border-slate-200 hover:bg-white/60">
+            <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+              <i data-lucide="swords" class="h-4 w-4"></i>
+            </span>
+            <span class="nav-label">Арена оптимальности</span>
+          </a>
+          <a href="game-shannon.html" class="nav-button flex items-center gap-3 rounded-2xl border border-transparent px-4 py-3 text-sm font-medium text-slate-600 hover:border-sky-200 hover:bg-sky-50/60">
+            <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-50 text-sky-600">
+              <i data-lucide="scale" class="h-4 w-4"></i>
+            </span>
+            <span class="nav-label">Энтропийные весы</span>
+          </a>
+        </nav>
+
+      </aside>
+
+      <main class="main-surface flex-1 rounded-[30px] border border-slate-200/80 bg-white/60 p-4 shadow-soft backdrop-blur-sm sm:p-6 lg:p-7">
+        <div class="flex items-center justify-between gap-4 border-b border-slate-200 pb-5">
+          <div class="flex items-center gap-3">
+            <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-200 text-slate-700">
+              <i data-lucide="atom" class="h-5 w-5"></i>
+            </div>
+            <div>
+              <div class="section-label text-[10px] uppercase tracking-[0.2em] text-slate-500">Научная платформа</div>
+              <div class="title-sub text-lg font-semibold text-slate-800">Аналитическая панель</div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button id="themeToggle" type="button" class="toggle flex items-center px-2.5" aria-label="Переключить тему">
+              <span class="flex items-center justify-center text-slate-600">
+                <i data-lucide="sun" class="h-4 w-4"></i>
+              </span>
+              <span class="toggle-knob ml-auto"></span>
+            </button>
+
+            <div class="flex h-11 w-11 items-center justify-center rounded-full bg-slate-900 text-sm font-semibold text-white shadow-sm" aria-label="Профиль AM" title="Профиль AM">
+              AM
+            </div>
+          </div>
+        </div>
+
+        <section id="overview" class="pt-8">
+          <div class="mb-6 flex items-center justify-between">
+            <div>
+              <div class="section-label text-[10px] font-medium uppercase tracking-[0.28em] text-slate-500">Обзор</div>
+              <h2 class="heading mt-2 text-3xl font-semibold tracking-[-0.04em] text-slate-900">Теоретический фундамент</h2>
+            </div>
+          </div>
+
+          <div class="panel-surface rounded-[28px] p-5 sm:p-7">
+            <div class="formula-card rounded-[22px] p-5 sm:p-7">
+              <div class="muted-label mb-3 text-[10px] font-medium uppercase tracking-[0.24em] text-slate-500">Энтропия Шеннона</div>
+              <div class="formula-text font-mono text-2xl leading-relaxed tracking-[-0.04em] text-slate-900 sm:text-4xl">
+                H(X) = -∑ P(x<sub>i</sub>) log<sub>2</sub> P(x<sub>i</sub>)
+              </div>
+            </div>
+
+            <p class="body-copy mt-6 max-w-5xl text-base leading-8 text-slate-600">
+              Энтропия Шеннона — это математический предел того, насколько сильно можно сжать текст без потери данных. Ни один алгоритм в мире не способно обойти этот барьер. Все существующие методы (Хаффман, LZ или гибриды) — это лишь разные способы подобраться к этому идеалу как можно ближе.
+            </p>
+
+            <div class="divider mt-8 h-px w-full"></div>
+
+            <div class="mt-8">
+              <div class="mb-4 text-[10px] font-medium uppercase tracking-[0.24em] text-slate-500">Аналитический обзор алгоритмов</div>
+
+              <div class="space-y-4">
+                <div class="info-block rounded-2xl border-l-2 border-l-emerald-500 p-4 pl-5">
+                  <div class="flex items-center gap-3">
+                    <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                      <i data-lucide="scan-line" class="h-4 w-4"></i>
+                    </span>
+                    <div class="card-title text-base font-semibold text-slate-900">Хаффман</div>
+                  </div>
+                  <p class="body-copy mt-3 text-sm leading-7 text-slate-600">
+                    Сжимает текст за счет частоты букв: частым символам даются самые короткие коды, а редким — длинные. Идеально работает, если одни буквы используются постоянно, а другие почти не встречаются.
+                  </p>
+                </div>
+
+                <div class="info-block rounded-2xl border-l-2 border-l-violet-500 p-4 pl-5">
+                  <div class="flex items-center gap-3">
+                    <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+                      <i data-lucide="database" class="h-4 w-4"></i>
+                    </span>
+                    <div class="card-title text-base font-semibold text-slate-900">LZ-сжатие</div>
+                  </div>
+                  <p class="body-copy mt-3 text-sm leading-7 text-slate-600">
+                    Находит в тексте повторяющиеся слова и целые фразы, заменяя их короткими ссылками на их первое появление. Эффективнее всего сжимает файлы с большим количеством одинаковых паттернов — например, программный код или книги.
+                  </p>
+                </div>
+
+                <div class="info-block rounded-2xl border-l-2 border-l-amber-500 p-4 pl-5">
+                  <div class="flex items-center gap-3">
+                    <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+                      <i data-lucide="zap" class="h-4 w-4"></i>
+                    </span>
+                    <div class="card-title text-base font-semibold text-slate-900">Гибридная модель</div>
+                  </div>
+                  <p class="body-copy mt-3 text-sm leading-7 text-slate-600">
+                    Объединяет оба подхода: сначала убирает повторяющиеся фразы через LZ, а затем сжимает отдельные символы по методу Хаффмана. Самый универсальный вариант для реальных данных, на котором основаны ZIP-архивы.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

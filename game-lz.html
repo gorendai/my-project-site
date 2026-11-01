@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Выбери лучший алгоритм</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            boxShadow: {
+              soft: '0 18px 45px rgba(15, 23, 42, 0.08)',
+            },
+          },
+        },
+      };
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="./curtain.js" defer></script>
+    <script src="./theme-toggle.js" defer></script>
+    <link rel="stylesheet" href="theme.css" />
+    <style>
+      .quiz-card {
+        transition: border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+      }
+      .quiz-card.is-correct {
+        border-color: rgb(52 211 153);
+        background-color: rgb(236 253 245);
+        box-shadow: 0 0 0 4px rgb(16 185 129 / 14%);
+        animation: correct-feedback 650ms ease-out;
+      }
+      .quiz-card.is-incorrect {
+        border-color: rgb(251 113 133);
+        background-color: rgb(255 241 242);
+        box-shadow: 0 0 0 4px rgb(244 63 94 / 12%);
+        animation: incorrect-feedback 650ms ease-out;
+      }
+      @keyframes correct-feedback {
+        50% { box-shadow: 0 0 0 8px rgb(16 185 129 / 22%); }
+      }
+      @keyframes incorrect-feedback {
+        50% { box-shadow: 0 0 0 8px rgb(244 63 94 / 20%); }
+      }
+      .answer-button:disabled {
+        cursor: default;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .quiz-card { transition: none; animation: none !important; }
+      }
+    </style>
+  </head>
+  <body class="theme-light transition-colors duration-500 ease-in-out min-h-screen antialiased">
+    <div id="curtain" class="site-curtain" aria-hidden="true">
+      <span class="site-curtain__label">Математический анализ оптимальности</span>
+    </div>
+    <div class="mobile-nav" aria-label="Мобильная навигация">
+      <div class="mobile-nav__header">
+        <span class="mobile-nav__title">Научная платформа</span>
+        <button id="mobileNavToggle" class="mobile-nav__toggle rounded-xl border border-slate-200 bg-white text-slate-700" type="button" aria-expanded="false" aria-controls="mobileNavMenu" aria-label="Открыть меню">
+          <i data-lucide="menu" class="h-5 w-5"></i>
+        </button>
+      </div>
+      <nav id="mobileNavMenu" class="mobile-nav__menu" aria-label="Основная навигация">
+        <a class="mobile-nav__link" href="index.html"><span class="mobile-nav__icon"><i data-lucide="layout-grid" class="h-4 w-4"></i></span>Обзор и теория</a>
+        <a class="mobile-nav__link" href="game-huffman.html"><span class="mobile-nav__icon"><i data-lucide="git-branch" class="h-4 w-4"></i></span>Лаборатория Хаффмана</a>
+        <a class="mobile-nav__link" href="game-lz.html" aria-current="page"><span class="mobile-nav__icon"><i data-lucide="timer" class="h-4 w-4"></i></span>Выбери лучший алгоритм</a>
+        <a class="mobile-nav__link" href="sandbox.html"><span class="mobile-nav__icon"><i data-lucide="swords" class="h-4 w-4"></i></span>Арена оптимальности</a>
+        <a class="mobile-nav__link" href="game-shannon.html"><span class="mobile-nav__icon"><i data-lucide="scale" class="h-4 w-4"></i></span>Энтропийные весы</a>
+      </nav>
+    </div>
+
+    <div class="mx-auto flex min-h-screen max-w-[1600px] px-3 py-4 md:px-5 lg:px-6">
+      <aside class="panel-surface mr-5 hidden w-[28%] rounded-[30px] bg-white p-5 lg:flex lg:flex-col">
+        <div class="mb-10">
+          <div class="muted-label mb-4 flex h-8 items-center text-slate-500" aria-label="Research OS">
+            <svg class="h-8 w-8" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 34V24M20 24V16M20 24L10 16M20 24L30 16M10 16V8M20 16V7M30 16V8" />
+              <circle cx="10" cy="7" r="1.5" />
+              <circle cx="20" cy="6" r="1.5" />
+              <circle cx="30" cy="7" r="1.5" />
+            </svg>
+          </div>
+          <h1 class="text-base font-medium leading-relaxed text-slate-800">
+            Математический анализ оптимальности алгоритмов сжатия данных: доказательство границ эффективности кодирования Хаффмана и словарного сжатия
+          </h1>
+        </div>
+
+        <nav class="mt-4 space-y-2" aria-label="Основная навигация">
+          <a href="index.html" class="nav-button flex items-center gap-3 rounded-2xl border border-transparent px-4 py-3 text-sm font-medium text-slate-600 hover:border-slate-200 hover:bg-slate-50">
+            <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
+              <i data-lucide="layout-grid" class="h-4 w-4"></i>
+            </span>
+            <span>Обзор и теория</span>
+          </a>
+          <a href="game-huffman.html" class="nav-button flex items-center gap-3 rounded-2xl border border-transparent px-4 py-3 text-sm font-medium text-slate-600 hover:border-slate-200 hover:bg-slate-50">
+            <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+              <i data-lucide="git-branch" class="h-4 w-4"></i>
+            </span>
+            <span>Лаборатория Хаффмана</span>
+          </a>
+          <a href="game-lz.html" aria-current="page" class="nav-button active-tab flex items-center gap-3 rounded-2xl border px-4 py-3 text-sm font-medium text-slate-700">
+            <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+              <i data-lucide="timer" class="h-4 w-4"></i>
+            </span>
+            <span>Выбери лучший алгоритм</span>
+          </a>
+          <a href="sandbox.html" class="nav-button flex items-center gap-3 rounded-2xl border border-transparent px-4 py-3 text-sm font-medium text-slate-600 hover:border-slate-200 hover:bg-slate-50">
+            <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+              <i data-lucide="swords" class="h-4 w-4"></i>
+            </span>
+            <span>Арена оптимальности</span>
+          </a>
+          <a href="game-shannon.html" class="nav-button flex items-center gap-3 rounded-2xl border border-transparent px-4 py-3 text-sm font-medium text-slate-600 hover:border-sky-200 hover:bg-sky-50/60">
+            <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-50 text-sky-600">
+              <i data-lucide="scale" class="h-4 w-4"></i>
+            </span>
+            <span>Энтропийные весы</span>
+          </a>
+        </nav>
+      </aside>
+
+      <main class="main-surface min-w-0 flex-1 rounded-[30px] border border-slate-200/80 bg-white/60 p-4 shadow-soft backdrop-blur-sm sm:p-6 lg:p-9">
+        <header class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-6">
+          <div class="flex items-center gap-3">
+            <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-50 text-violet-600">
+              <i data-lucide="timer" class="h-5 w-5"></i>
+            </div>
+            <div>
+              <div class="section-label text-[10px] uppercase tracking-[0.2em] text-slate-500">Научная платформа · блиц-квиз</div>
+              <div class="title-sub text-lg font-semibold text-slate-800">Выбери лучший алгоритм</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <button id="themeToggle" type="button" class="toggle flex items-center px-2.5" aria-label="Переключить тему">
+              <span class="flex items-center justify-center text-slate-600">
+                <i data-lucide="sun" class="h-4 w-4"></i>
+              </span>
+              <span class="toggle-knob ml-auto"></span>
+            </button>
+            <div class="flex h-11 w-11 items-center justify-center rounded-full bg-slate-900 text-sm font-semibold text-white shadow-sm" aria-label="Профиль AM" title="Профиль AM">
+              AM
+            </div>
+          </div>
+        </header>
+
+        <section class="mx-auto max-w-5xl pt-8 lg:pt-10">
+          <div class="mb-7">
+            <div class="section-label text-[10px] font-medium uppercase tracking-[0.28em] text-slate-500">Реакция и теория</div>
+            <h1 class="heading mt-3 text-3xl font-semibold tracking-[-0.04em] text-slate-900 sm:text-4xl">Какой алгоритм справится лучше?</h1>
+            <p class="body-copy mt-3 max-w-3xl text-base leading-7 text-slate-600">
+              Прочитайте условие и выберите алгоритм с наиболее подходящей стратегией сжатия. На каждый вопрос даётся 10 секунд — чем быстрее верный ответ, тем больше очков.
+            </p>
+          </div>
+
+          <section id="quiz-card" class="quiz-card panel-surface rounded-[28px] border border-slate-200/80 bg-white/70 p-5 shadow-soft sm:p-7" aria-labelledby="question-heading">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <div id="question-counter" class="muted-label text-[10px] font-medium uppercase tracking-[0.24em] text-slate-500">Готовы к раунду?</div>
+                <div id="score-display" class="mt-2 font-mono text-sm font-semibold text-violet-700" aria-live="polite">Очки: 0</div>
+              </div>
+              <div class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-2.5">
+                <i data-lucide="clock-3" class="h-5 w-5 text-violet-600"></i>
+                <div>
+                  <div class="muted-label text-[10px] uppercase tracking-[0.2em] text-slate-500">Осталось</div>
+                  <div class="font-mono text-xl font-semibold text-slate-900"><span id="timer-display">10</span><span class="text-sm text-slate-500"> сек</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 h-2 overflow-hidden rounded-full bg-slate-100" role="progressbar" aria-label="Оставшееся время" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+              <div id="timer-progress" class="h-full w-full rounded-full bg-violet-500 transition-[width] duration-100 ease-linear"></div>
+            </div>
+
+            <div id="question-area" class="mt-7 rounded-2xl border border-slate-200/80 bg-slate-50/70 p-5 sm:p-6">
+              <div class="muted-label text-[10px] font-medium uppercase tracking-[0.22em] text-slate-500">Сценарий</div>
+              <h2 id="question-heading" class="card-title mt-3 text-xl font-semibold leading-8 text-slate-900 sm:text-2xl">Готовы проверить свою интуицию?</h2>
+              <p id="question-prompt" class="body-copy mt-3 text-base leading-7 text-slate-600">В каждом раунде выберите алгоритм, который лучше всего подходит для описанных данных.</p>
+            </div>
+
+            <div id="answer-options" class="mt-5 grid gap-3 sm:grid-cols-2" role="group" aria-label="Варианты алгоритма">
+              <button type="button" data-answer="LZ77" disabled class="answer-button group rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:border-violet-300 hover:bg-violet-50/50 focus:outline-none focus:ring-4 focus:ring-violet-100 disabled:opacity-70">
+                <span class="flex items-center justify-between gap-3">
+                  <span class="font-semibold text-slate-800">LZ77</span>
+                  <i data-lucide="arrow-up-right" class="h-4 w-4 text-slate-400 transition group-hover:text-violet-600"></i>
+                </span>
+                <span class="mt-1 block text-sm text-slate-500">Ищет повторяющиеся последовательности</span>
+              </button>
+              <button type="button" data-answer="Хаффман" disabled class="answer-button group rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:border-violet-300 hover:bg-violet-50/50 focus:outline-none focus:ring-4 focus:ring-violet-100 disabled:opacity-70">
+                <span class="flex items-center justify-between gap-3">
+                  <span class="font-semibold text-slate-800">Хаффман</span>
+                  <i data-lucide="arrow-up-right" class="h-4 w-4 text-slate-400 transition group-hover:text-violet-600"></i>
+                </span>
+                <span class="mt-1 block text-sm text-slate-500">Частым символам даёт короткие коды</span>
+              </button>
+              <button type="button" data-answer="Гибрид" disabled class="answer-button group rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:border-violet-300 hover:bg-violet-50/50 focus:outline-none focus:ring-4 focus:ring-violet-100 disabled:opacity-70">
+                <span class="flex items-center justify-between gap-3">
+                  <span class="font-semibold text-slate-800">Гибрид</span>
+                  <i data-lucide="arrow-up-right" class="h-4 w-4 text-slate-400 transition group-hover:text-violet-600"></i>
+                </span>
+                <span class="mt-1 block text-sm text-slate-500">Сочетает словарный и статистический подходы</span>
+              </button>
+              <button type="button" data-answer="Raw" disabled class="answer-button group rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:border-violet-300 hover:bg-violet-50/50 focus:outline-none focus:ring-4 focus:ring-violet-100 disabled:opacity-70">
+                <span class="flex items-center justify-between gap-3">
+                  <span class="font-semibold text-slate-800">Raw</span>
+                  <i data-lucide="arrow-up-right" class="h-4 w-4 text-slate-400 transition group-hover:text-violet-600"></i>
+                </span>
+                <span class="mt-1 block text-sm text-slate-500">Оставляет данные без сжатия</span>
+              </button>
+            </div>
+
+            <div class="mt-5 flex flex-wrap items-center justify-between gap-4">
+              <p id="feedback" class="min-h-6 text-sm font-medium text-slate-500" role="status" aria-live="polite">Начните игру, когда будете готовы.</p>
+              <button id="start-button" type="button" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-slate-300">
+                <i data-lucide="play" class="h-4 w-4"></i>
+                Начать игру
+              </button>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const QUESTION_TIME_MS = 10_000;
+      const QUESTIONS = [
+        {
+          title: 'Повторы на каждом шаге',
+          prompt: 'Поток состоит из «АААААБББББВВВВВ», и в данных много длинных повторяющихся цепочек символов.',
+          answer: 'LZ77',
+          explanation: 'LZ77 эффективно заменяет повторяющиеся последовательности ссылками на уже встреченные данные.',
+        },
+        {
+          title: 'Короткое уникальное предложение',
+          prompt: 'Небольшая фраза почти не содержит повторов, а заголовки и таблицы сжатия добавят заметные накладные расходы.',
+          answer: 'Raw',
+          explanation: 'Для очень коротких и неповторяющихся данных накладные расходы могут превысить выигрыш от сжатия.',
+        },
+        {
+          title: 'Большой текст с повторяющимися слогами',
+          prompt: 'Книга содержит часто повторяющиеся слова и слоги, а отдельные символы встречаются с разной частотой.',
+          answer: 'Гибрид',
+          explanation: 'Словарный поиск ловит повторяющиеся фрагменты, а кодирование Хаффмана сжимает получившиеся символы.',
+        },
+        {
+          title: 'Неравномерные частоты без длинных повторов',
+          prompt: 'В длинном потоке часто встречаются несколько символов, остальные редки, но одинаковые цепочки почти не повторяются.',
+          answer: 'Хаффман',
+          explanation: 'Код Хаффмана использует неравномерность частот: частые символы получают более короткие коды.',
+        },
+      ];
+
+      const quizCard = document.getElementById('quiz-card');
+      const questionCounter = document.getElementById('question-counter');
+      const scoreDisplay = document.getElementById('score-display');
+      const timerDisplay = document.getElementById('timer-display');
+      const timerProgress = document.getElementById('timer-progress');
+      const timerProgressBar = timerProgress.parentElement;
+      const questionHeading = document.getElementById('question-heading');
+      const questionPrompt = document.getElementById('question-prompt');
+      const feedback = document.getElementById('feedback');
+      const startButton = document.getElementById('start-button');
+      const answerButtons = Array.from(document.querySelectorAll('[data-answer]'));
+
+      let questionIndex = -1;
+      let score = 0;
+      let correctAnswers = 0;
+      let deadline = 0;
+      let timerId;
+      let nextQuestionTimeout;
+      let acceptingAnswer = false;
+      let gameActive = false;
+
+      function updateScore() {
+        scoreDisplay.textContent = `Очки: ${score}`;
+      }
+
+      function updateTimer() {
+        const remainingMs = Math.max(0, deadline - performance.now());
+        const remainingSeconds = Math.ceil(remainingMs / 1000);
+        const progress = remainingMs / QUESTION_TIME_MS * 100;
+
+        timerDisplay.textContent = String(remainingSeconds);
+        timerProgress.style.width = `${progress}%`;
+        timerProgressBar.setAttribute('aria-valuenow', String(Math.round(progress)));
+
+        if (remainingMs === 0 && acceptingAnswer) {
+          finishQuestion(null);
+        }
+      }
+
+      function setAnswersDisabled(disabled) {
+        answerButtons.forEach(button => {
+          button.disabled = disabled;
+        });
+      }
+
+      function showQuestion() {
+        questionIndex++;
+        if (questionIndex >= QUESTIONS.length) {
+          finishGame();
+          return;
+        }
+
+        const question = QUESTIONS[questionIndex];
+        questionCounter.textContent = `Вопрос ${questionIndex + 1} из ${QUESTIONS.length}`;
+        questionHeading.textContent = question.title;
+        questionPrompt.textContent = question.prompt;
+        feedback.textContent = 'Выберите наиболее подходящий алгоритм.';
+        feedback.className = 'min-h-6 text-sm font-medium text-slate-500';
+        quizCard.classList.remove('is-correct', 'is-incorrect');
+        setAnswersDisabled(false);
+        acceptingAnswer = true;
+        deadline = performance.now() + QUESTION_TIME_MS;
+        updateTimer();
+        timerId = window.setInterval(updateTimer, 100);
+      }
+
+      function finishQuestion(selectedAnswer) {
+        if (!acceptingAnswer) return;
+        if (selectedAnswer !== null && performance.now() >= deadline) {
+          selectedAnswer = null;
+        }
+        acceptingAnswer = false;
+        window.clearInterval(timerId);
+        setAnswersDisabled(true);
+
+        const question = QUESTIONS[questionIndex];
+        const isCorrect = selectedAnswer === question.answer;
+        if (isCorrect) {
+          const timeBonus = Math.ceil(Math.max(0, deadline - performance.now()) / 100);
+          score += 100 + timeBonus;
+          correctAnswers++;
+          quizCard.classList.add('is-correct');
+          feedback.textContent = `Верно! +${100 + timeBonus} очков. ${question.explanation}`;
+          feedback.className = 'min-h-6 text-sm font-medium text-emerald-700';
+        } else {
+          quizCard.classList.add('is-incorrect');
+          feedback.textContent = selectedAnswer === null
+            ? `Время вышло. ${question.explanation}`
+            : `Не совсем. Верный ответ — ${question.answer}. ${question.explanation}`;
+          feedback.className = 'min-h-6 text-sm font-medium text-rose-700';
+        }
+
+        updateScore();
+        nextQuestionTimeout = window.setTimeout(showQuestion, 1300);
+      }
+
+      function finishGame() {
+        gameActive = false;
+        questionCounter.textContent = 'Раунд завершён';
+        questionHeading.textContent = 'Отличная работа!';
+        questionPrompt.textContent = `Ваш результат: ${score} очков. Верных ответов: ${correctAnswers} из ${QUESTIONS.length}.`;
+        feedback.textContent = 'Попробуйте ещё раз и побейте свой результат.';
+        feedback.className = 'min-h-6 text-sm font-medium text-violet-700';
+        quizCard.classList.remove('is-correct', 'is-incorrect');
+        timerDisplay.textContent = '0';
+        timerProgress.style.width = '0%';
+        timerProgressBar.setAttribute('aria-valuenow', '0');
+        setAnswersDisabled(true);
+        startButton.innerHTML = '<i data-lucide="rotate-ccw" class="h-4 w-4"></i>Сыграть ещё раз';
+        startButton.disabled = false;
+        lucide.createIcons();
+      }
+
+      function startGame() {
+        if (gameActive) return;
+        window.clearInterval(timerId);
+        window.clearTimeout(nextQuestionTimeout);
+        gameActive = true;
+        questionIndex = -1;
+        score = 0;
+        correctAnswers = 0;
+        updateScore();
+        startButton.disabled = true;
+        startButton.textContent = 'Игра идёт…';
+        showQuestion();
+      }
+
+      answerButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          finishQuestion(button.dataset.answer);
+        });
+      });
+
+      startButton.addEventListener('click', startGame);
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,389 @@
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: Inter, "Segoe UI", sans-serif;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+.mobile-nav {
+  display: none;
+}
+
+.mobile-nav__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  line-height: 1;
+}
+
+.mobile-nav__menu {
+  display: none;
+}
+
+.mobile-nav__menu.is-open {
+  display: grid;
+}
+
+.mobile-nav__link,
+button,
+input,
+select,
+textarea {
+  min-height: 44px;
+}
+
+.mobile-nav__link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+}
+
+.theme-light {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+.theme-soft-gray {
+  background-color: #e4e4e7;
+  color: #111827;
+}
+
+.theme-soft-gray .panel-surface,
+.theme-soft-gray .main-surface,
+.theme-soft-gray .formula-card,
+.theme-soft-gray .info-block,
+.theme-soft-gray .nav-button,
+.theme-soft-gray .toggle,
+.theme-soft-gray .metrics-card {
+  background-color: rgba(255, 255, 255, 0.55);
+  border-color: rgba(113, 113, 122, 0.14);
+}
+
+.theme-soft-gray .soft-text,
+.theme-soft-gray .muted-label,
+.theme-soft-gray .section-label,
+.theme-soft-gray .side-muted,
+.theme-soft-gray .nav-label,
+.theme-soft-gray .body-copy,
+.theme-soft-gray .text-slate-600,
+.theme-soft-gray .text-slate-500 {
+  color: #374151;
+}
+
+.theme-soft-gray .title-main,
+.theme-soft-gray .title-sub,
+.theme-soft-gray .heading,
+.theme-soft-gray .card-title,
+.theme-soft-gray .metric-value,
+.theme-soft-gray .formula-text,
+.theme-soft-gray .text-slate-900,
+.theme-soft-gray .text-slate-800 {
+  color: #111827;
+}
+
+.transition-colors {
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: 500ms;
+  transition-timing-function: ease-in-out;
+}
+
+.panel-surface,
+.main-surface,
+.formula-card,
+.info-block,
+.nav-button,
+.toggle,
+.metrics-card {
+  transition: all 0.5s ease-in-out;
+}
+
+.nav-button {
+  transition: transform 0.25s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.nav-button:hover {
+  transform: translateX(2px);
+}
+
+.active-tab {
+  background: linear-gradient(135deg, rgba(148, 163, 184, 0.12), rgba(255, 255, 255, 0.7));
+  border-color: rgba(148, 163, 184, 0.22);
+}
+
+.formula-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(241,245,249,0.9));
+  border: 1px solid rgba(148,163,184,0.18);
+}
+
+.info-block,
+.metrics-card {
+  background: rgba(255,255,255,0.62);
+  border: 1px solid rgba(148,163,184,0.18);
+}
+
+.toggle {
+  position: relative;
+  width: 110px;
+  height: 42px;
+  padding: 0;
+  border-radius: 9999px;
+  border: 1px solid rgba(148,163,184,0.2);
+  background: rgba(255,255,255,0.8);
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+}
+
+.toggle-knob {
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  box-shadow: 0 4px 12px rgba(15,23,42,0.12);
+  transform: translateY(-50%);
+  transition: all 0.5s ease-in-out;
+}
+
+.theme-soft-gray .toggle-knob {
+  left: calc(100% - 34px);
+  background: linear-gradient(135deg, #f4f4f5, #d4d4d8);
+}
+
+.theme-soft-gray .toggle {
+  background: rgba(255,255,255,0.45);
+}
+
+.divider {
+  background: linear-gradient(to right, rgba(148,163,184,0.18), rgba(148,163,184,0.02));
+}
+
+.site-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f8fafc, #fff, #e0f2fe);
+  color: #0369a1;
+  font: 500 12px/1.5 ui-monospace, monospace;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transform: translate3d(0, 0, 0);
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.site-curtain.is-hidden {
+  transform: translate3d(0, -100%, 0);
+  pointer-events: none;
+}
+
+.site-curtain__label {
+  white-space: nowrap;
+}
+
+@media (max-width: 1023px) {
+  .mobile-nav {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.75rem;
+    padding: 0.75rem;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 1.25rem;
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+  }
+
+  .mobile-nav__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .mobile-nav__title {
+    min-width: 0;
+    overflow: hidden;
+    color: #334155;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mobile-nav__menu {
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .mobile-nav__link {
+    border: 1px solid transparent;
+    border-radius: 0.875rem;
+    color: #475569;
+    font-size: 1rem;
+    text-decoration: none;
+  }
+
+  .mobile-nav__link:nth-child(1) .mobile-nav__icon {
+    background: #f1f5f9;
+    color: #475569;
+  }
+
+  .mobile-nav__link:nth-child(2) .mobile-nav__icon {
+    background: #ecfdf5;
+    color: #059669;
+  }
+
+  .mobile-nav__link:nth-child(3) .mobile-nav__icon {
+    background: #f5f3ff;
+    color: #7c3aed;
+  }
+
+  .mobile-nav__link:nth-child(4) .mobile-nav__icon {
+    background: #fffbeb;
+    color: #d97706;
+  }
+
+  .mobile-nav__link:nth-child(5) .mobile-nav__icon {
+    background: #f0f9ff;
+    color: #0284c7;
+  }
+
+  .mobile-nav__link:hover,
+  .mobile-nav__link:focus-visible {
+    border-color: rgba(148, 163, 184, 0.22);
+    background: rgba(248, 250, 252, 0.9);
+    color: #0f172a;
+  }
+
+  .mobile-nav__link[aria-current="page"] {
+    border-color: rgba(148, 163, 184, 0.22);
+    background: linear-gradient(135deg, rgba(148, 163, 184, 0.12), rgba(255, 255, 255, 0.7));
+    color: #0f172a;
+  }
+
+  .mobile-nav__icon {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    flex: 0 0 2rem;
+    place-items: center;
+    border-radius: 0.625rem;
+    background: #f1f5f9;
+  }
+
+  .main-surface {
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  body {
+    font-size: 1rem;
+  }
+
+  .main-surface p {
+    font-size: 1rem;
+  }
+
+  .main-surface {
+    border-radius: 1.25rem;
+    padding: 1rem;
+  }
+
+  .heading {
+    font-size: clamp(1.5rem, 7vw, 2rem);
+    line-height: 1.2;
+  }
+
+  .formula-text {
+    overflow-wrap: anywhere;
+    font-size: clamp(1.15rem, 5vw, 1.75rem);
+  }
+
+  .body-copy {
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  .toggle {
+    width: 5.5rem;
+  }
+
+  .site-curtain__label {
+    max-width: calc(100vw - 2rem);
+    overflow-wrap: anywhere;
+    text-align: center;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 480px) {
+  .mobile-nav {
+    border-radius: 1rem;
+  }
+
+  .main-surface {
+    padding: 0.875rem;
+  }
+
+  .main-surface > header,
+  .main-surface > div:first-child {
+    align-items: flex-start;
+  }
+
+  .main-surface .title-sub {
+    font-size: 1rem;
+  }
+
+  .main-surface .section-label {
+    letter-spacing: 0.12em;
+  }
+
+  .main-surface .panel-surface,
+  .main-surface .formula-card,
+  .main-surface .info-block {
+    border-radius: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-curtain,
+  .site-curtain__label {
+    transition-duration: 0ms;
+  }
+}
